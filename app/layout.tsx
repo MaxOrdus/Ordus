@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/components/auth/AuthProvider'
 import { QueryProvider } from '@/components/providers/QueryProvider'
+import { SupabaseCheck } from '@/components/auth/SupabaseCheck'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body>
         <QueryProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <SupabaseCheck>
+            <AuthProvider>{children}</AuthProvider>
+          </SupabaseCheck>
         </QueryProvider>
       </body>
     </html>
