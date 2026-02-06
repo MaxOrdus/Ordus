@@ -122,14 +122,37 @@ export default function LoginPage() {
               {isLoading ? 'Signing in...' : 'Sign In'}
             </Button>
 
-            <div className="text-center text-sm text-gray-600 dark:text-gray-400">
-              <p>Demo accounts:</p>
-              <p className="mt-1">
-                <span className="font-mono">lawyer@firm.com</span> (Lawyer)
-              </p>
-              <p>
-                <span className="font-mono">clerk@firm.com</span> (Law Clerk)
-              </p>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white dark:bg-deep-indigo text-gray-500">or</span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              onClick={async () => {
+                setError('')
+                setIsLoading(true)
+                try {
+                  await login('demo@ordus.app', 'demo')
+                  router.push('/')
+                } catch (err: any) {
+                  setError(err.message || 'Demo login failed')
+                } finally {
+                  setIsLoading(false)
+                }
+              }}
+              variant="outline"
+              className="w-full border-living-coral text-living-coral hover:bg-living-coral/10"
+            >
+              🎮 Demo Login (No Password)
+            </Button>
+
+            <div className="text-center text-xs text-gray-500 dark:text-gray-500">
+              <p>Demo mode uses mock data for testing</p>
             </div>
           </form>
         </CardContent>
