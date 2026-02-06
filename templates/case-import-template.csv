@@ -1,0 +1,5 @@
+client_name,client_email,client_phone,client_dob,case_title,date_of_loss,date_opened,estimated_value,status,stage,primary_lawyer_email,paralegal_email,mig_status,notes
+John Smith,john@example.com,555-0100,1980-01-15,Smith v. Insurance Co.,2024-01-15,2024-01-20,50000,Active,Intake,glaloshilegal@gmail.com,,MIG,"Initial intake, client injured in MVA"
+Jane Doe,jane@example.com,555-0101,1975-05-20,Doe v. City of Toronto,2024-02-01,2024-02-05,75000,Active,Discovery,glaloshilegal@gmail.com,,Non-MIG,"Discovery phase, awaiting medical records"
+Bob Johnson,bob@example.com,555-0102,1990-03-10,Johnson v. ABC Corp,2024-03-10,2024-03-15,100000,Active,SABS Application,glaloshilegal@gmail.com,,CAT,"CAT application pending"
+

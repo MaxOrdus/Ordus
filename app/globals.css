@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 244 246 248; /* Vapor */
+    --foreground: 42 47 79; /* Deep Indigo */
+    
+    --card: 255 255 255;
+    --card-foreground: 42 47 79;
+    
+    --primary: 0 210 211; /* Electric Teal */
+    --primary-foreground: 255 255 255;
+    
+    --secondary: 102 126 234; /* Violet */
+    --secondary-foreground: 255 255 255;
+    
+    --accent: 255 107 107; /* Living Coral */
+    --accent-foreground: 255 255 255;
+    
+    --muted: 156 163 175; /* Fade Grey */
+    --muted-foreground: 156 163 175;
+    
+    --border: 229 231 235;
+    --input: 229 231 235;
+    --ring: 0 210 211;
+  }
+
+  .dark {
+    --background: 42 47 79; /* Deep Indigo */
+    --foreground: 244 246 248; /* Vapor */
+    
+    --card: 42 47 79;
+    --card-foreground: 244 246 248;
+    
+    --primary: 0 210 211;
+    --primary-foreground: 42 47 79;
+    
+    --secondary: 102 126 234;
+    --secondary-foreground: 255 255 255;
+    
+    --accent: 255 107 107;
+    --accent-foreground: 255 255 255;
+    
+    --muted: 107 114 128;
+    --muted-foreground: 156 163 175;
+    
+    --border: 55 65 81;
+    --input: 55 65 81;
+    --ring: 0 210 211;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-gray-200 dark:border-gray-700;
+  }
+  body {
+    @apply bg-vapor text-deep-indigo antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  /* Glassmorphism utility - Updated for "Quiet & Clean" */
+  .glass {
+    @apply bg-white/50 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/10;
+  }
+  
+  .glass-strong {
+    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border border-white/30 dark:border-white/10;
+  }
+  
+  /* Kinetic typography animation */
+  .kinetic-text {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  /* Immersive scroll container */
+  .immersive-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Magnetic hover effect */
+  .magnetic {
+    @apply transition-transform duration-200 ease-out;
+  }
+  
+  .magnetic:hover {
+    @apply scale-105;
+  }
+}
