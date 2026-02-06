@@ -9,10 +9,27 @@ interface SupabaseCheckProps {
 
 export function SupabaseCheck({ children }: SupabaseCheckProps) {
   const [isConfigured, setIsConfigured] = React.useState<boolean | null>(null)
+  const [demoMode, setDemoMode] = React.useState(false)
 
   React.useEffect(() => {
-    setIsConfigured(isSupabaseConfigured())
+    const isDemo = localStorage.getItem('ordus-demo-mode') === 'true'
+    setDemoMode(isDemo)
+    setIsConfigured(isSupabaseConfigured() || isDemo)
   }, [])
+
+  const enableDemoMode = () => {
+    localStorage.setItem('ordus-demo-mode', 'true')
+    setDemoMode(true)
+    setIsConfigured(true)
+    window.location.reload()
+  }
+
+  const disableDemoMode = () => {
+    localStorage.removeItem('ordus-demo-mode')
+    setDemoMode(false)
+    setIsConfigured(false)
+    window.location.reload()
+  }
 
   if (isConfigured === null) {
     return (
@@ -64,15 +81,31 @@ export function SupabaseCheck({ children }: SupabaseCheckProps) {
           </p>
 
           <button
-            onClick={() => window.location.reload()}
-            className="w-full mt-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-2 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
+            onClick={enableDemoMode}
+            className="w-full mt-3 bg-living-coral text-white py-2 rounded-lg font-medium hover:bg-living-coral/90"
           >
-            Retry Connection
+            🎮 Enter Demo Mode
           </button>
+
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2 text-center">
+            Demo mode uses mock data - perfect for testing UI!
+          </p>
         </div>
       </div>
     )
   }
 
-  return <>{children}</>
+  return (
+    <>
+      {demoMode && (
+        <div className="fixed top-0 left-0 right-0 bg-living-coral text-white text-center py-1 z-50 text-sm font-medium">
+          🎮 DEMO MODE - Mock Data Only
+          <button onClick={disableDemoMode} className="ml-3 underline text-xs">
+            Exit Demo
+          </button>
+        </div>
+      )}
+      {children}
+    </>
+  )
 }

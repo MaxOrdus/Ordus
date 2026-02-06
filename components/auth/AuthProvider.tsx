@@ -15,16 +15,71 @@ interface AuthContextType {
 
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined)
 
+// Demo mode mock user
+const DEMO_USER: User = {
+  id: 'demo-user-id',
+  email: 'demo@ordus.app',
+  name: 'Demo Admin',
+  role: 'Admin',
+  firmId: 'demo-firm-id',
+  createdAt: new Date().toISOString(),
+  lastLoginAt: new Date().toISOString(),
+  isActive: true,
+  preferences: {
+    theme: 'system',
+    notifications: {
+      email: true,
+      push: true,
+      criticalDeadlines: true,
+      treatmentGaps: true,
+      taskAssignments: true,
+      settlementOffers: true
+    },
+    dashboard: {
+      showBillableStreak: true,
+      showCaseVelocity: true,
+      showRedZone: true,
+      showStalledCases: true
+    }
+  }
+}
+
+const DEMO_SESSION: AuthSession = {
+  user: DEMO_USER,
+  token: 'demo-token',
+  expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = React.useState<User | null>(null)
   const [session, setSession] = React.useState<AuthSession | null>(null)
   const [isLoading, setIsLoading] = React.useState(true)
+  const [isDemoMode, setIsDemoMode] = React.useState(false)
   
   // Use ref for cache to avoid stale closure issues
   const metadataCacheRef = React.useRef<Record<string, any>>({})
 
   // Use singleton Supabase client
-  const supabase = React.useMemo(() => getSupabase(), [])
+  const supabase = React.useMemo(() => {
+    try {
+      return getSupabase()
+    } catch {
+      // Supabase not configured, will use demo mode
+      return null
+    }
+  }, [])
+
+  // Demo mode initialization
+  React.useEffect(() => {
+    const demoMode = localStorage.getItem('ordus-demo-mode') === 'true'
+    if (demoMode) {
+      console.log('[Auth] Demo mode enabled')
+      setIsDemoMode(true)
+      setUser(DEMO_USER)
+      setSession(DEMO_SESSION)
+      setIsLoading(false)
+    }
+  }, [])
 
   // Transform Supabase session to our format
   const transformSession = React.useCallback(async (supabaseSession: any): Promise<AuthSession | null> => {
@@ -211,10 +266,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [supabase, handleSessionUpdate])
 
   const handleLogin = React.useCallback(async (email: string, password: string) => {
+    // Demo mode bypass
+    if (isDemoMode || email === 'demo@ordus.app') {
+      console.log('[Auth] Demo login')
+      setUser(DEMO_USER)
+      setSession(DEMO_SESSION)
+      setIsLoading(false)
+      return
+    }
+
     setIsLoading(true)
     console.log('[Auth] Login attempt for:', email)
     
     try {
+      if (!supabase) throw new Error('Supabase not configured')
       const { data, error } = await supabase.auth.signInWithPassword({ email, password })
       
       if (error) {
@@ -259,8 +324,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [supabase, transformSession])
 
   const handleSignup = React.useCallback(async (email: string, password: string, name: string, role: string) => {
+    if (isDemoMode) {
+      console.log('[Auth] Demo signup - using demo user')
+      setUser(DEMO_USER)
+      setSession(DEMO_SESSION)
+      setIsLoading(false)
+      return
+    }
+
     setIsLoading(true)
     try {
+      if (!supabase) throw new Error('Supabase not configured')
       const { data, error } = await supabase.auth.signUp({ email, password })
       
       if (error) throw new Error(error.message)
@@ -297,9 +371,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [supabase, transformSession])
 
   const handleLogout = React.useCallback(async () => {
+    if (isDemoMode) {
+      console.log('[Auth] Demo logout')
+      localStorage.removeItem('ordus-demo-mode')
+      setSession(null)
+      setUser(null)
+      window.location.reload()
+      return
+    }
+
     setIsLoading(true)
     try {
       metadataCacheRef.current = {}
+      if (!supabase) throw new Error('Supabase not configured')
       const { error } = await supabase.auth.signOut()
       if (error) {
         console.error('[Auth] Logout error:', error)
