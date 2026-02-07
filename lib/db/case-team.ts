@@ -1,6 +1,6 @@
 import { getSupabase } from '@/lib/supabase/singleton'
 
-export type TeamRole = 'lead_lawyer' | 'paralegal' | 'team_member'
+export type TeamRole = 'lead_lawyer' | 'paralegal' | 'team_member' | 'ab_assistant'
 
 // Use singleton to avoid multiple connections
 
@@ -388,6 +388,7 @@ export async function getColleaguesOnSameCases(userId: string): Promise<{
     'lead_lawyer': 3,
     'paralegal': 2,
     'team_member': 1,
+    'ab_assistant': 1,
   }
 
   // Aggregate by user, keeping track of their highest team role

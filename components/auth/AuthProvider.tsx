@@ -99,12 +99,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         console.log('[Auth] Fetching metadata for user:', userId)
 
-        // Add timeout to metadata query - increased to 15s
-        const metadataPromise = supabase
-          .from('users_metadata')
-          .select('*')
-          .eq('id', userId)
-          .single()
+        if (!supabase) {
+          console.log('[Auth] Supabase not configured, using fallback')
+          userMetadata = null
+        } else {
+          // Add timeout to metadata query - increased to 15s
+          const metadataPromise = supabase
+            .from('users_metadata')
+            .select('*')
+            .eq('id', userId)
+            .single()
 
         const timeoutPromise = new Promise((_, reject) => {
           setTimeout(() => reject(new Error('Metadata query timeout after 15s')), 15000)
@@ -124,6 +128,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           // Cache it
           metadataCacheRef.current[userId] = data
           userMetadata = data
+        }
         }
       } catch (err: any) {
         console.error('[Auth] Exception fetching metadata:', err?.message || err)
@@ -198,7 +203,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }, 10000)
 
-    // Set up auth state listener
+    // Set up auth state listener (only if Supabase is configured)
+    if (!supabase) {
+      console.log('[Auth] Supabase not configured, skipping auth state listener')
+      setIsLoading(false)
+      return () => {}
+    }
+    
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, supabaseSession) => {
       if (!mounted) return
       

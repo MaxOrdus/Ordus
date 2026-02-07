@@ -220,7 +220,7 @@ export default function CasesPage() {
         actions={
           <>
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={() => refetch()}
               disabled={isFetching}

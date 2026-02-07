@@ -69,7 +69,7 @@ export function useCases(options: UseCasesOptions = {}) {
 export function useCasesByIds(caseIds: string[], lightweight = true) {
   return useQuery({
     queryKey: queryKeys.casesById(caseIds),
-    queryFn: () => getCasesByIds(caseIds, lightweight),
+    queryFn: () => getCasesByIds(caseIds, { lightweight }),
     staleTime: 30 * 1000,
     enabled: caseIds.length > 0,
   })
@@ -135,7 +135,7 @@ export function useClients(options: UseClientsOptions = {}) {
   
   return useQuery({
     queryKey: queryKeys.clientsList({ firmId }),
-    queryFn: () => getClients({ firmId }),
+    queryFn: () => getClients(),
     staleTime: 60 * 1000,
     enabled,
   })
@@ -381,6 +381,7 @@ export interface TeamMember {
   role: string
   firmId: string
   createdAt?: string
+  isActive?: boolean
 }
 
 export interface Firm {

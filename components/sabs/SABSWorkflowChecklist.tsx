@@ -193,7 +193,7 @@ export function SABSWorkflowChecklist({
       deadline: addDays(21),
       assignedTo: 'LegalAssistant',
       critical: true,
-      completed: caseData.medicalProviders.some(m => m.type === 'FamilyDoctor' && m.recordsObtained),
+      completed: caseData.medicalProviders.some(m => m.type === 'GP' && m.recordsObtained),
     })
 
     items.push({

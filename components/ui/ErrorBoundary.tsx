@@ -63,7 +63,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
                   {this.state.error.stack}
                 </pre>
               )}
-              <Button onClick={this.handleRetry} variant="outline">
+              <Button onClick={this.handleRetry} variant="ghost">
                 Try Again
               </Button>
             </div>
@@ -157,7 +157,7 @@ export function QueryError({
             <p className="mt-1 text-sm text-red-700">{error.message}</p>
           </div>
           {onRetry && (
-            <Button size="sm" variant="outline" onClick={onRetry}>
+            <Button size="sm" variant="ghost" onClick={onRetry}>
               Retry
             </Button>
           )}

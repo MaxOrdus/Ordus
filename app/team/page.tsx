@@ -740,7 +740,7 @@ export default function TeamPage() {
               </p>
               <div className="space-y-2 mb-4">
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   className="w-full justify-start border-blue-200 hover:border-blue-400 hover:bg-blue-50"
                   onClick={() => handleAssignRole('lead_lawyer')}
                 >
@@ -751,7 +751,7 @@ export default function TeamPage() {
                   </div>
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   className="w-full justify-start border-blue-100 hover:border-blue-300 hover:bg-blue-50"
                   onClick={() => handleAssignRole('team_member')}
                 >
@@ -770,7 +770,7 @@ export default function TeamPage() {
               </p>
               <div className="space-y-2">
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   className="w-full justify-start border-teal-200 hover:border-teal-400 hover:bg-teal-50"
                   onClick={() => handleAssignRole('paralegal')}
                 >
@@ -781,7 +781,7 @@ export default function TeamPage() {
                   </div>
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   className="w-full justify-start border-teal-100 hover:border-teal-300 hover:bg-teal-50"
                   onClick={() => handleAssignRole('ab_assistant' as TeamRole)}
                 >

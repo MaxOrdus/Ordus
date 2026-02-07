@@ -145,7 +145,7 @@ export default function LoginPage() {
                   setIsLoading(false)
                 }
               }}
-              variant="outline"
+              variant="ghost"
               className="w-full border-living-coral text-living-coral hover:bg-living-coral/10"
             >
               🎮 Demo Login (No Password)

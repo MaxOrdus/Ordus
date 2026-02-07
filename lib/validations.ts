@@ -45,14 +45,14 @@ export const UpdateUserSchema = z.object({
 
 export const CreateFirmSchema = z.object({
   name: z.string().min(1, 'Firm name is required').max(200, 'Firm name too long'),
-  settings: z.record(z.unknown()).optional(),
+  settings: z.record(z.string(), z.unknown()).optional(),
 })
 
 export const UpdateFirmSchema = z.object({
   firmId: z.string().uuid('Invalid firm ID'),
   updates: z.object({
     name: z.string().min(1).max(200).optional(),
-    settings: z.record(z.unknown()).optional(),
+    settings: z.record(z.string(), z.unknown()).optional(),
   }),
 })
 

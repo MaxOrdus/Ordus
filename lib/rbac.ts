@@ -108,16 +108,16 @@ export function getUserPermissions(user: User | null): RolePermissions | null {
 /**
  * Check if current user has permission (uses current session)
  */
-export function checkPermission(permission: keyof RolePermissions): boolean {
-  const user = getCurrentUser()
+export async function checkPermission(permission: keyof RolePermissions): Promise<boolean> {
+  const user = await getCurrentUser()
   return hasPermission(user, permission)
 }
 
 /**
  * Require permission or throw error
  */
-export function requirePermission(permission: keyof RolePermissions): void {
-  if (!checkPermission(permission)) {
+export async function requirePermission(permission: keyof RolePermissions): Promise<void> {
+  if (!(await checkPermission(permission))) {
     throw new Error(`Permission denied: ${permission}`)
   }
 }

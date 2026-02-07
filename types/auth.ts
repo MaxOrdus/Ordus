@@ -8,6 +8,7 @@ export interface User {
   id: string
   email: string
   name: string
+  phone?: string
   role: UserRole
   avatar?: string
   firmId?: string // Multi-tenant support

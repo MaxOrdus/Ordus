@@ -40,6 +40,8 @@ export interface PICase {
   // Metadata
   notes: string[]
   tags: string[]
+  createdAt?: string
+  updatedAt?: string
   
   // Team Assignment
   primaryLawyerId?: string // Senior or Junior Lawyer assigned to case
